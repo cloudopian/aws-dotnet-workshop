@@ -1,0 +1,262 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "DotNetDevVPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true",
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DotNetDev-VPC"
+          }
+        ]
+      }
+    },
+    "Pub1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "0",
+            { "Fn::GetAZs": "" }
+          ]
+        },
+        "CidrBlock": "10.0.1.0/24",
+        "MapPublicIpOnLaunch": true,
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Pub-1"
+          }
+        ]
+      }
+    },
+    "Pub2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "1",
+            { "Fn::GetAZs": "" }
+          ]
+        },
+        "CidrBlock": "10.0.2.0/24",
+        "MapPublicIpOnLaunch": true,
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Pub-2"
+          }
+        ]
+      }
+    },
+    "Pri1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "0",
+            { "Fn::GetAZs": "" }
+          ]
+        },
+        "CidrBlock": "10.0.3.0/24",
+        "MapPublicIpOnLaunch": true,
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Pri-1"
+          }
+        ]
+      }
+    },
+    "Pri2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "1",
+            { "Fn::GetAZs": "" }
+          ]
+        },
+        "CidrBlock": "10.0.4.0/24",
+        "MapPublicIpOnLaunch": true,
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Pri-2"
+          }
+        ]
+      }
+    },
+    "PubRT": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Pub-rt"
+          }
+        ]
+      }
+    },
+    "PubRoute": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": { "Ref": "DotNetDevIg" },
+        "RouteTableId": { "Ref": "PubRT" }
+      }
+    },
+    "PriRT": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Pri-rt"
+          }
+        ]
+      }
+    },
+
+    "DotNetDevIg": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DotNetDevVPC"
+          }
+        ]
+      }
+    },
+    "AttachIG": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "InternetGatewayId": { "Ref": "DotNetDevIg" }
+      }
+    },
+    "Pub1RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": { "Ref": "Pub1" },
+        "RouteTableId": { "Ref": "PubRT" }
+      }
+    },
+    "Pub2RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": { "Ref": "Pub2" },
+        "RouteTableId": { "Ref": "PubRT" }
+      }
+    },
+    "Pri1RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": { "Ref": "Pri1" },
+        "RouteTableId": { "Ref": "PriRT" }
+      }
+    },
+    "Pri2RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": { "Ref": "Pri2" },
+        "RouteTableId": { "Ref": "PriRT" }
+      }
+    },
+    "DevMachineRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "RoleName": "DotNetDev-DevMachine-Role",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+        ]
+      }
+    },
+    "DevMachineIntanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [ { "Ref": "DevMachineRole" } ],
+        "InstanceProfileName": "DotNetDev-DevMachine-Role"
+      }
+    },
+    "DevMachineSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": "DotNetDev-DevMachine-SG",
+        "GroupDescription": "Security group for dev machine with RDP Access and internal network access",
+        "VpcId": { "Ref": "DotNetDevVPC" },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3389,
+            "ToPort": 3389,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3389,
+            "ToPort": 3389,
+            "CidrIpv6": "::/0"
+          },
+          {
+            "IpProtocol": "-1",
+            "FromPort": "-1",
+            "ToPort": "-1",
+            "CidrIp": "10.0.0.0/16"
+          }
+        ],
+        "SecurityGroupEgress": [
+          {
+            "IpProtocol": "-1",
+            "FromPort": "-1",
+            "ToPort": "-1",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "VPCId": {
+      "Description": "DevOps VPC",
+      "Value": { "Ref": "DotNetDevVPC" }
+    },
+    "Subnet1": {
+      "Description": "Subnet 1 id",
+      "Value": { "Ref": "Pub1" }
+    },
+    "Subnet2": {
+      "Description": "Subnet 2 id",
+      "Value": { "Ref": "Pub2" }
+    }
+  }
+
+}
