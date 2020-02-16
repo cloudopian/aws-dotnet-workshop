@@ -265,7 +265,7 @@
         "RoleName": "DotNetDev-DevMachineLinux-Role",
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM",
-             "arn:aws:iam::aws:policy/service-role/AmazonSSMManagedInstanceCore"
+          "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
         ]
       }
     },
