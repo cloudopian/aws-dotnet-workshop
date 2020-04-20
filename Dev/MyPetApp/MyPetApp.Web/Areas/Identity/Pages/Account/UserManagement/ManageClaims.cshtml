@@ -1,0 +1,45 @@
+﻿@page
+@model MyPetApp.Web.Areas.Identity.Pages.Account.Claims.ManageClaimsModel
+@{
+}
+<form method="POST">
+    <div class="input-group mb-3">
+
+        <input type="text" class="form-control" placeholder="User's email address" aria-label="Email address" aria-describedby="button-addon2" asp-for="SearchEmailAddress">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" asp-page-handler="Search">Search</button>
+        </div>
+
+    </div>
+    @if (Model.UserInfo != null && Model.UserInfo.Username != null)
+    {
+        <h1>@Model.UserInfo.Username</h1>
+        <input type="hidden" asp-for="UserInfo.Username" />
+        <input type="text" class="form-control" placeholder="Claim name" aria-label="Claim name" aria-describedby="button-addon2" asp-for="CustomClaim.Key">
+        <input type="text" class="form-control" placeholder="Claim value" aria-label="Claim value" aria-describedby="button-addon2" asp-for="CustomClaim.Value">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon3" asp-page-handler="CreateClaim">Create Claim</button>
+
+        <dl>
+            <dt>Username</dt>
+            <dd>@Model.UserInfo.Username</dd>
+            <dt>Is enabled</dt>
+            <dd>@Model.UserInfo.IsEnabled</dd>
+            <dt>Creation date</dt>
+            <dd>@Model.UserInfo.CreatedDate</dd>
+        </dl>
+
+        @if (Model.UserInfo.Attributes != null)
+        {
+            <h2>Attributes</h2>
+            <dl>
+                @foreach (var a in Model.UserInfo.Attributes)
+                {
+                    <dt>@a.Key</dt>
+                    <dd>@a.Value</dd>
+                }
+            </dl>
+        }
+
+    }
+</form>
+<h3>@Model.Message</h3>

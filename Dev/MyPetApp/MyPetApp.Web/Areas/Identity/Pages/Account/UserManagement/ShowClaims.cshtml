@@ -1,0 +1,31 @@
+﻿@page
+@model MyPetApp.Web.Areas.Identity.Pages.Account.Claims.ShowClaimsModel
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Claims</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model.UserClaims)
+        {
+        <tr>
+            <td>@u.Username</td>
+            <td>
+                @foreach (var c in @u.UserClaims)
+                {
+                <div>
+                    @c.Type <br />
+                    @c.Issuer <br />
+                    @c.Value <br />
+                    <br />
+                </div>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

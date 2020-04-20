@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>b41b65c9-ec34-4122-a779-f247e3cc3430</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.101.15" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.3.107.7" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.104.6" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.103.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.110.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Amazon.AspNetCore.Identity.Cognito\Amazon.AspNetCore.Identity.Cognito.csproj" />
+    <ProjectReference Include="..\MyPetApp.Config\MyPetApp.Config.csproj" />
+    <ProjectReference Include="..\MyPetApp.Security\MyPetApp.Security.csproj" />
+  </ItemGroup>
+
+</Project>

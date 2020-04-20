@@ -1,0 +1,20 @@
+﻿@model  IEnumerable<System.Security.Claims.Claim>
+
+@{
+    ViewData["Title"] = "ManageClaims";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+
+<h1>Manage Claims</h1>
+@foreach(var c in Model)
+{
+    <div>
+        <ul>
+            <li>@c.Issuer</li>
+            <li>@c.Type</li>
+            <li>@c.Value</li>
+        </ul>
+    </div>
+}
+

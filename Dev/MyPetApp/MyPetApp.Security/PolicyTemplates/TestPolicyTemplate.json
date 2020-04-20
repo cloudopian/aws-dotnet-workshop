@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowAllS3ActionsInTenantFolder",
+      "Effect": "Allow",
+      "Action": [ "s3:GetObject" ],
+      "Resource": [ "arn:aws:s3:::###bucket-name###/###tenant-id###/*" ]
+    },
+    {
+      "Sid": "AllowTableAccess",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:DescribeTable"
+      ],
+      "Resource": [
+        "###table-arn###"
+      ]
+    },
+    {
+      "Sid": "AllowSpecificTenantAndTier",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem"
+      ],
+      "Resource": [
+        "###table-arn###"
+      ],
+      "Condition": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "###tenant-id###*"
+          ]
+        },
+        "ForAllValues:StringEquals": {
+          "dynamodb:Attributes": [
+            "AnimalId",
+            "Age",
+            "Image",
+            "Name"
+          ]
+        },
+        "StringEqualsIfExists": {
+          "dynamodb:Select": "SPECIFIC_ATTRIBUTES"
+        }
+      }
+    }
+  ]
+}

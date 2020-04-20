@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Step Page";
+}
+@model IEnumerable<AnimalInfo>
+
+<table class="table">
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Age
+        </th>
+        <th>
+            Breed
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Breed)
+            </td>
+        </tr>
+    }
+
+</table>

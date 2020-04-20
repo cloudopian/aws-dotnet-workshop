@@ -1,0 +1,44 @@
+﻿@page
+@model MyPetApp.Web.Areas.Animal.Pages.AnimalSearchModel
+@{
+}
+
+<form method="POST">
+    <div class="input-group mb-3">
+
+        <input type="text" class="form-control" placeholder="Animal Id" aria-label="Animal Id" aria-describedby="button-addon2" asp-for="AnimalId">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" asp-page-handler="Search">Search</button>
+        </div>
+
+    </div>
+    @if (Model.AnimalSet != null && Model.AnimalSet.Count()>0 )
+    {
+        <table class="table" style="font-size:x-large">
+            <thead>
+                <tr>
+                    <th>Animal Id</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.AnimalSet)
+                {
+                <tr>
+                    <td>@a.AnimalId</td>
+                    <td>@a.Name</td>
+                    <td>@a.Age</td>
+                    <td><img src="@a.Image" alt="pet pic" height="450" /></td>
+                </tr>
+                }
+            </tbody> 
+        </table>
+    }
+    else
+    {
+        <h2>Found no animals</h2>
+    }
+</form>
+<h3>@Model.Message</h3>
