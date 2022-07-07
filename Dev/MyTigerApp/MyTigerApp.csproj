@@ -10,7 +10,7 @@
         <None Include="web.config" CopyToPublishDirectory="Always" />
   </ItemGroup>
  <ItemGroup>
-   <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1" />
+   <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.15" />
    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1" />
    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.1" />
    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1" />
